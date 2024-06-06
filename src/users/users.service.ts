@@ -25,10 +25,16 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.usersRepository.update(id, updateUserDto);
+    await this.usersRepository.update(id, updateUserDto);
+
+    return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+  async remove(id: number): Promise<boolean> {
+    const deleted = await this.usersRepository.delete(id);
+
+    if (deleted) {
+      return true;
+    }
   }
 }
